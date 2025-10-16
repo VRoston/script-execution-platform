@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "base"
+  config.vm.box = "bento/ubuntu-22.04"
 
   config.vm.provision "shell", name: "common", path: "deps.sh"
   # NOTE: This will enable public access to the opened port

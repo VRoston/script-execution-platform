@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executar Script</title>
+</head>
+<body>
+  <h1>Executar Script</h1>
+  <button id="executeButton">Executar Script</button>
+  <p id="output"></p>
+  <script>
+    document.getElementById('executeButton').addEventListener('click', async () => {
+      try {
+        const response = await fetch('http://localhost:5000/run-script');
+        const data = await response.json();
+        if (data.output) {
+          document.getElementById('output').innerText = data.output;
+        } else {
+          document.getElementById('output').innerText = data.error || 'Erro ao executar o script.';
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        document.getElementById('output').innerText = 'Erro ao conectar ao servidor.';
+      }
+    });
+  </script>
+</body>
+</html>

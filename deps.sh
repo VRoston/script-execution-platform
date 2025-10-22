@@ -10,3 +10,7 @@ systemctl start mysql.service
 # exit
 # mysql_secure_installation
 systemctl restart mysql
+python -m venv /vagrant/.venv
+source /vagrant/.venv/bin/activate
+pip install -r /vagrant/requirements.txt
+nohup flask run --host=0.0.0.0 > /vagrant/logs/app.log 2>&1 &

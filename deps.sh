@@ -10,8 +10,9 @@ systemctl start mysql.service
 # exit
 # mysql_secure_installation
 systemctl restart mysql
-apt-get install python3-pip
+apt-get install python3-pip -y
 python3 -m venv /vagrant/.venv
 source /vagrant/.venv/bin/activate
 pip install -r /vagrant/requirements.txt
+mkdir /vagrant/logs
 nohup flask run --host=0.0.0.0 > /vagrant/logs/app.log 2>&1 &

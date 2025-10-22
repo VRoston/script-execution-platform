@@ -1,4 +1,5 @@
 apt-get update
+apt-get install build-essential -y
 apt-get install apache2 -y
 rm /var/www/html/index.html
 ln -s /vagrant/index.html /var/www/html/index.html

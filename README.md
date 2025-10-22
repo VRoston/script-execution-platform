@@ -1,6 +1,6 @@
 # script-execution-platform
 
-## Setup para VMs
+## Setup para a VM
 
 ### Setup with Vagrant
 

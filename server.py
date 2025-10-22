@@ -7,7 +7,7 @@ app = Flask(__name__)
 def run_script():
     try:
         # Executa o script e captura a saída
-        result = subprocess.run(['./execute.sh'], capture_output=True, text=True, check=True)
+        result = subprocess.run(['/vagrant/execute.sh'], capture_output=True, text=True, check=True)
         return jsonify({"output": result.stdout.strip()})
     except subprocess.CalledProcessError as e:
         return jsonify({"error": e.stderr.strip()}), 500

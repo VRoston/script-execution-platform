@@ -1,3 +1,6 @@
 .vagrant
 .env
+logs
+.venv
 output.txt
+

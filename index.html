@@ -7,12 +7,32 @@
 </head>
 <body>
   <h1>Executar Script</h1>
+
+  <label for="cpuSelect">CPU:</label>
+  <select id="cpuSelect">
+    <option value="1">1</option>
+    <option value="2">2</option>
+  </select>
+
+  <label for="cpuUsage">Uso de CPU (%):</label>
+  <input type="number" id="cpuUsage" min="0" max="100" value="50">
+
+  <label for="priority">Prioridade:</label>
+  <input type="number" id="priority" min="0" step="1" value="0">
+
   <button id="executeButton">Executar Script</button>
   <p id="output"></p>
   <script>
     document.getElementById('executeButton').addEventListener('click', async () => {
+      const cpu = document.getElementById('cpuSelect').value;
+      const cpuUsage = document.getElementById('cpuUsage').value;
+      const priority = document.getElementById('priority').value;
       try {
-        const response = await fetch('http://localhost:5000/run-script');
+        const response = await fetch('http://localhost:5000/run-script', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cpu, cpuUsage, priority })
+        });
         const data = await response.json();
         if (data.output) {
           document.getElementById('output').innerText = data.output;

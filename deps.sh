@@ -17,7 +17,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r /vagrant/requirements.txt
 mkdir -p /vagrant/logs
-mkdir -p /vagrant/scripts
+mkdir -p /home/vagrant/scripts
 cd /vagrant
 nohup python3 /vagrant/server.py --host=0.0.0.0 > /vagrant/logs/app.log 2>&1 &
 chmod +x execute.sh

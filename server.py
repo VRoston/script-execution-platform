@@ -13,7 +13,7 @@ def run_script():
         filename = data.get('filename')
         name, extension = os.path.splitext(filename)
         cpu = data.get('cpu')
-        cpuUsage = (data.get('cpuUsage') * 1000)
+        cpuUsage = (int(data.get('cpuUsage')) * 1000)
         weight = data.get('weight')
         # Monta o comando com as variáveis recebidas
         cmd = ["sudo",  "/vagrant/execute.sh", str(name), str(cpu), str(weight), str(cpuUsage)]
@@ -32,7 +32,7 @@ def save_script():
         filename = data.get('filename')
         content = data.get('content')
         # Caminho seguro para a pasta do Vagrant
-        base_path = '/vagrant/scripts'
+        base_path = '/home/vagrant/scripts'
         file_path = os.path.join(base_path, filename)
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)

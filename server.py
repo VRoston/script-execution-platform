@@ -1,7 +1,10 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import subprocess
+import os
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/run-script', methods=['POST'])
 def run_script():
@@ -16,6 +19,21 @@ def run_script():
         return jsonify({"output": result.stdout.strip()})
     except subprocess.CalledProcessError as e:
         return jsonify({"error": e.stderr.strip()}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/save-script', methods=['POST'])
+def save_script():
+    try:
+        data = request.get_json()
+        filename = data.get('filename')
+        content = data.get('content')
+        # Caminho seguro para a pasta do Vagrant
+        base_path = '/vagrant'
+        file_path = os.path.join(base_path, filename)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        return jsonify({"message": f"Arquivo '{filename}' salvo com sucesso."})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

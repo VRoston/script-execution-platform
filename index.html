@@ -22,6 +22,16 @@
 
   <button id="executeButton">Executar Script</button>
   <p id="output"></p>
+
+  <hr>
+  <h2>Editar Script</h2>
+  <input type="file" id="fileInput" accept=".sh,.txt">
+  <br>
+  <textarea id="fileContent" rows="10" cols="60" placeholder="O conteúdo do arquivo aparecerá aqui"></textarea>
+  <br>
+  <button id="saveButton">Salvar Script</button>
+  <p id="saveStatus"></p>
+
   <script>
     document.getElementById('executeButton').addEventListener('click', async () => {
       const cpu = document.getElementById('cpuSelect').value;
@@ -42,6 +52,39 @@
       } catch (error) {
         console.error('Erro:', error);
         document.getElementById('output').innerText = 'Erro ao conectar ao servidor.';
+      }
+    });
+
+    // Carregar e visualizar o arquivo
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        document.getElementById('fileContent').value = evt.target.result;
+      };
+      reader.readAsText(file);
+    });
+
+    // Salvar o arquivo editado
+    document.getElementById('saveButton').addEventListener('click', async () => {
+      const fileInput = document.getElementById('fileInput');
+      if (!fileInput.files[0]) {
+        document.getElementById('saveStatus').innerText = 'Selecione um arquivo para salvar.';
+        return;
+      }
+      const filename = fileInput.files[0].name;
+      const content = document.getElementById('fileContent').value;
+      try {
+        const response = await fetch('http://localhost:5000/save-script', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename, content })
+        });
+        const data = await response.json();
+        document.getElementById('saveStatus').innerText = data.message || data.error;
+      } catch (error) {
+        document.getElementById('saveStatus').innerText = 'Erro ao salvar o arquivo.';
       }
     });
   </script>

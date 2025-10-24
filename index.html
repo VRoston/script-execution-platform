@@ -25,7 +25,7 @@
 
   <hr>
   <h2>Editar Script</h2>
-  <input type="file" id="fileInput" accept=".sh,.txt">
+  <input type="file" id="fileInput" accept=".c">
   <br>
   <textarea id="fileContent" rows="10" cols="60" placeholder="O conteúdo do arquivo aparecerá aqui"></textarea>
   <br>
@@ -34,14 +34,20 @@
 
   <script>
     document.getElementById('executeButton').addEventListener('click', async () => {
+      const fileInput = document.getElementById('fileInput');
+      if (!fileInput.files[0]) {
+        document.getElementById('saveStatus').innerText = 'Selecione um arquivo para executar.';
+        return;
+      }
+      const filename = fileInput.files[0].name;
       const cpu = document.getElementById('cpuSelect').value;
       const cpuUsage = document.getElementById('cpuUsage').value;
       const weight = document.getElementById('weight').value;
       try {
-        const response = await fetch('http://localhost:5000/run-script', {
+        const response = await fetch('http://127.0.0.1:5000/run-script', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cpu, cpuUsage, weight })
+          body: JSON.stringify({ filename, cpu, cpuUsage, weight })
         });
         const data = await response.json();
         if (data.output) {
@@ -76,12 +82,14 @@
       const filename = fileInput.files[0].name;
       const content = document.getElementById('fileContent').value;
       try {
-        const response = await fetch('http://localhost:5000/save-script', {
+        const response = await fetch('http://127.0.0.1:5000/save-script', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ filename, content })
         });
+        console.log(response)
         const data = await response.json();
+        console.log(data)
         document.getElementById('saveStatus').innerText = data.message || data.error;
       } catch (error) {
         document.getElementById('saveStatus').innerText = 'Erro ao salvar o arquivo.';

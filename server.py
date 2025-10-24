@@ -9,12 +9,14 @@ CORS(app)
 @app.route('/run-script', methods=['POST'])
 def run_script():
     try:
-        data = request.get_json()
+        data = request.json
+        filename = data.get('filename')
+        name, extension = os.path.splitext(filename)
         cpu = data.get('cpu')
         cpuUsage = (data.get('cpuUsage') * 1000)
         weight = data.get('weight')
         # Monta o comando com as variáveis recebidas
-        cmd = ["/vagrant/execute.sh", "execute", str(cpu), str(weight), str(cpuUsage)]
+        cmd = ["/vagrant/execute.sh", str(name), str(cpu), str(weight), str(cpuUsage)]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         return jsonify({"output": result.stdout.strip()})
     except subprocess.CalledProcessError as e:
@@ -24,12 +26,13 @@ def run_script():
 
 @app.route('/save-script', methods=['POST'])
 def save_script():
+    print('test')
     try:
-        data = request.get_json()
+        data = request.json
         filename = data.get('filename')
         content = data.get('content')
         # Caminho seguro para a pasta do Vagrant
-        base_path = '/vagrant'
+        base_path = '/vagrant/scripts'
         file_path = os.path.join(base_path, filename)
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)

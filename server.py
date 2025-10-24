@@ -16,7 +16,7 @@ def run_script():
         cpuUsage = (data.get('cpuUsage') * 1000)
         weight = data.get('weight')
         # Monta o comando com as variáveis recebidas
-        cmd = ["/vagrant/execute.sh", str(name), str(cpu), str(weight), str(cpuUsage)]
+        cmd = ["sudo",  "/vagrant/execute.sh", str(name), str(cpu), str(weight), str(cpuUsage)]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         return jsonify({"output": result.stdout.strip()})
     except subprocess.CalledProcessError as e:

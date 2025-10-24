@@ -20,4 +20,4 @@ mkdir -p /vagrant/logs
 mkdir -p /vagrant/scripts
 cd /vagrant
 nohup python3 /vagrant/server.py --host=0.0.0.0 > /vagrant/logs/app.log 2>&1 &
-
+chmod +x execute.sh

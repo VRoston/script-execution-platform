@@ -49,7 +49,9 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ filename, cpu, cpuUsage, weight })
         });
+        console.log(response)
         const data = await response.json();
+        console.log(data)
         if (data.output) {
           document.getElementById('output').innerText = data.output;
         } else {
@@ -87,9 +89,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ filename, content })
         });
-        console.log(response)
         const data = await response.json();
-        console.log(data)
         document.getElementById('saveStatus').innerText = data.message || data.error;
       } catch (error) {
         document.getElementById('saveStatus').innerText = 'Erro ao salvar o arquivo.';
